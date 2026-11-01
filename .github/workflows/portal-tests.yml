@@ -1,0 +1,23 @@
+name: Portal contract tests
+on:
+  pull_request:
+    paths:
+      - 'portal/**'
+      - '.github/workflows/portal-tests.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'portal/**'
+      - '.github/workflows/portal-tests.yml'
+permissions:
+  contents: read
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --test portal/worker.test.cjs
