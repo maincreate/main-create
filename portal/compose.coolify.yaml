@@ -4,7 +4,6 @@ services:
       context: .
       dockerfile: Dockerfile
 
-    image: tinkertunnel-portal:local
     restart: unless-stopped
     init: true
 
