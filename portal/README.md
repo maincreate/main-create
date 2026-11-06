@@ -67,3 +67,27 @@ node server.mjs
 ## Future SaaS (not part of MVP)
 
 Run the same contracts in a thin hosted control plane that stores only identity, authorization, minimal metadata and job pointers. Build outputs, installations, secrets and detailed logs remain on user-controlled machines unless explicitly opted in. Multi-tenant isolation, abuse controls and security reviews are prerequisites for launch.
+
+## Coolify homelab deployment
+
+Use the Git-based **Docker Compose Application** flow (not the Docker Compose Empty service); this portal image needs a Docker build context from the repository. Choose the private repository via the authorized GitHub App or deployment key.
+
+- **Repository:** `TinkerTunnel/tinkertunnel.github.io`
+- **Branch for current preview:** `feat/portal-onboarding-marketplace`
+- **Build strategy:** Docker Compose
+- **Base directory:** `/portal`
+- **Compose file:** `compose.coolify.yaml` relative to that directory
+- **Service:** `portal`, internal HTTP port `3000`
+- **Domain:** Leave unset for now. The preview has no authentication.
+
+The Coolify Compose variant maps container port 3000 to **127.0.0.1:13000 on the Docker host**. This prevents unauthenticated access from the LAN or public Internet. Use an SSH tunnel to access it from another computer:
+
+```sh
+ssh -L 13000:127.0.0.1:13000 USER@COOLIFY-DOCKER-HOST
+```
+
+Open `http://127.0.0.1:13000` on your laptop; test `curl -fsS http://127.0.0.1:13000/healthz` on the Docker host. If 13000 is already taken, set `PORTAL_PORT` in Coolify to an unused host port and update the SSH forwarding accordingly.
+
+Coolify will normally supply its own service/proxy labels. **Do not enable Raw Compose deployment** unless you explicitly maintain the labels and networking yourself. After local authentication is implemented, a trusted private app gateway can route to internal port 3000 using Coolify's domain configuration or a properly protected reverse proxy.
+
+The portal should never receive the host Docker socket. Secure agent enrollment and GitHub authorization will be developed as separate capabilities; do not use shell execution to simulate them.
