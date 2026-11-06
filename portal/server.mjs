@@ -1,6 +1,7 @@
 import { createServer } from "node:http";
 
 const port = Number(process.env.PORT ?? "3000");
+const host = process.env.HOST ?? "127.0.0.1";
 if (!Number.isInteger(port) || port < 1 || port > 65535) throw new Error("Invalid PORT");
 
 // Adapt the existing Fetch API portal without Cloudflare, npm packages or network dependencies.
@@ -52,6 +53,6 @@ const server = createServer(async (req, res) => {
     else res.end();
   }
 });
-server.listen(port, "0.0.0.0", () => console.log("TinkerTunnel portal listening on container port " + port));
+server.listen(port, host, () => console.log("TinkerTunnel portal listening on " + host + ":" + port));
 process.on("SIGTERM", () => server.close(() => process.exit(0)));
 process.on("SIGINT", () => server.close(() => process.exit(0)));
