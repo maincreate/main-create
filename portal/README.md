@@ -1,31 +1,69 @@
-# TinkerTunnel Portal — Developer Preview
+# TinkerTunnel Portal — local-first Docker MVP
 
-This folder implements a real Cloudflare Worker portal (frontend plus backend), **not** an authenticated production control plane.
+The portal runs on your own Docker host. No Cloudflare, external database, SaaS billing or hosted gateway is required. This is a preview: the dashboard and OS-aware framework catalog/planning API work; account login, node enrollment, MCP and installer execution remain disabled.
 
-## Routes
+## Start
 
-- GET / — portal with Overview, Connections, Marketplace, Build nodes and Activity
-- GET /api/v1/catalog — declarative framework catalog with OS/arch targets
-- POST /api/v1/plans — validated *read-only* dry-run installation plan
-- GET /api/v1/status — deliberately unconnected preview state
-- GET /healthz — health response
-- GET /mcp — 503 until remote authenticated MCP is implemented
-- Installation, enrollment and OAuth endpoints — 503 until security is implemented
+Install Docker Engine and Docker Compose v2. From the repository:
 
-## Deploy
+```sh
+cd portal
+docker compose up -d --build
+docker compose ps
+curl -fsS http://127.0.0.1:3000/healthz
+```
 
-Worker name: tinkertunnel-portal. Suggested custom domain: portal.tinkertunnel.com. Upload the service-worker-format portal/worker.js to Cloudflare Workers, then associate the custom domain. **Do not enable installation by changing only the frontend**.
+Open **http://127.0.0.1:3000** on the Docker host. Until PR #1 merges, check out branch `feat/portal-onboarding-marketplace` first.
 
-## Next gated milestones
+On a different laptop, use an SSH tunnel to the Docker host instead of exposing the HTTP service:
 
-1. Account/session model and GitHub App installation OAuth, using server-side credential storage and validated installation ownership.
-2. Signed, short-lived agent pairing; outbound tunnel and per-device capability scopes; heartbeat/revoke lifecycle.
-3. OAuth-authenticated MCP server with per-user, per-workspace resource authorization and auditable tool invocations. ChatGPT setup instructions must reflect current workspace/plan permissions. Connection proof from real authorized MCP request, not from UI clicks.
-4. Approved catalog recipes: signed or content-hash pinned, dependency graph, immutable install plan, allowed effect types, dry-run/diff and approval. Specific Windows/Linux/macOS combinations must pass platform validation before becoming installable.
-5. Idempotent job executor, status stream and artifact evidence. No arbitrary commands or broad sudo. Separate physical-device flash approval and lock.
+```sh
+ssh -L 3000:127.0.0.1:3000 USER@YOUR-DOCKER-HOST
+```
 
-## Product constraints
+Then open **http://127.0.0.1:3000** on the laptop. To change the listening port on the Docker host: `PORTAL_PORT=3100 docker compose up -d --build`, and update the SSH port forwarding accordingly.
 
-GitHub Actions self-hosted runners are for approved build jobs; TinkerTunnel agent is for scoped capabilities and workflow execution. They are separate trust surfaces. OAuth credentials and pairing tokens must never be stored in GitHub Pages static assets or browser local storage.
+```sh
+docker compose logs --tail=80
+docker compose down
+```
 
-This preview intentionally reports no connected accounts or nodes, even if there are already home lab runners. Public JSON includes no personal hostnames or private network addresses.
+One container, no database, no cloud credentials, no paid services. Initial Docker image downloads and optional Git operations require Internet access.
+
+## Current API
+
+- `GET /` — Overview, Connections, Marketplace, Build nodes, Activity UI
+- `GET /api/v1/catalog` — curated framework catalog
+- `POST /api/v1/plans` — validated OS/architecture-specific read-only install plan
+- `GET /healthz` — container health check
+- `GET /api/v1/status` — deliberately unconnected preview status
+- `GET /mcp` and `/api/v1/install`, `/api/v1/enroll`, `/oauth/...` — fail closed (503)
+
+To run contract tests without Docker on Node 22+:
+
+```sh
+node --test *.test.cjs
+node server.mjs
+```
+
+## Security posture
+
+- Node runs unprivileged in a read-only container with all Linux capabilities dropped.
+- No privileged containers, Docker socket mount, host filesystem access or device passthrough.
+- Container memory/PID/CPU limits and a small request-body cap.
+- HTTP is bound to **host loopback only**, so it isn't LAN/public accessible.
+- No authentication exists yet. Do not make the management dashboard accessible over a public reverse proxy or open LAN.
+- An SSH tunnel or an existing authenticated VPN is appropriate for remote administration.
+- The *MCP endpoint* must remain separate and narrowly authorized. Remote ChatGPT cannot reach a local-only endpoint without an authenticated HTTPS bridge.
+
+## Next milestones
+
+1. Local admin identity, session, CSRF, audit and encrypted persistent state (SQLite in Docker volume).
+2. Selected-repository GitHub App authorization with revocation and server-side token storage.
+3. Short-lived agent enrollment; outbound-only transport, verified node identity and scoped capabilities.
+4. Approved immutable framework recipes per OS/architecture, dry-run diff, explicit approvals and safe rollback.
+5. OAuth-protected MCP gateway and optional minimal external rendezvous (only if the remote ChatGPT client needs it).
+
+## Future SaaS (not part of MVP)
+
+Run the same contracts in a thin hosted control plane that stores only identity, authorization, minimal metadata and job pointers. Build outputs, installations, secrets and detailed logs remain on user-controlled machines unless explicitly opted in. Multi-tenant isolation, abuse controls and security reviews are prerequisites for launch.

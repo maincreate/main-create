@@ -1,0 +1,17 @@
+services:
+  portal:
+    build: .
+    image: tinkertunnel-portal:local
+    restart: unless-stopped
+    init: true
+    ports:
+      # Loopback-only. Use SSH forwarding to reach a remote Docker host.
+      - "127.0.0.1:${PORTAL_PORT:-3000}:3000"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    pids_limit: 128
+    mem_limit: 256m
+    cpus: 0.5
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=16m

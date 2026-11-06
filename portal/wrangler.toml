@@ -1,7 +1,0 @@
-name = "tinkertunnel-portal"
-main = "worker.js"
-compatibility_date = "2026-10-31"
-
-[[routes]]
-pattern = "portal.tinkertunnel.com"
-custom_domain = true
