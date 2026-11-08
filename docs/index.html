@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="TinkerTunnel documentation: prepare a build host, enroll builders, connect GitHub, and track project requirements.">
-<title>Documentation — TinkerTunnel</title><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head>
-<body><header class="nav wrap"><a class="brand" href="/" aria-label="TinkerTunnel home"><span class="mark">T<span>↗</span></span> TinkerTunnel</a>
-<nav aria-label="Main"><a href="/">Product</a><a aria-current="page" href="/docs/">Documentation</a><a href="https://github.com/TinkerTunnel" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav></header>
+<meta name="description" content="Main{Create} documentation: prepare a build host, enroll builders, connect GitHub, and track project requirements.">
+<title>Documentation — Main{Create}</title><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head>
+<body><header class="nav wrap"><a class="brand" href="/" aria-label="Main{Create} home">Main{Create}</a>
+<nav aria-label="Main"><a href="/">Product</a><a aria-current="page" href="/docs/">Documentation</a><a href="https://github.com/maincreate" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav></header>
 <main class="docs-layout wrap">
 <aside class="docs-sidebar" aria-label="Documentation sections"><div class="docs-sidebar-title">GET STARTED</div>
 <nav class="docs-links" aria-label="Page sections">
@@ -14,7 +14,7 @@
 <article class="docs-main">
 <div class="eyebrow">DOCUMENTATION / DISTRIBUTED BUILDS</div>
 <h1 id="overview">Build with the machines you already have.</h1>
-<p class="docs-intro">Install a lightweight service on a host, discover and pair it from your controller, then let TinkerTunnel manage its GitHub Actions runner. Start with Raspberry Pi OS 64-bit for the first end-to-end test.</p>
+<p class="docs-intro">Install a lightweight service on a host, discover and pair it from your controller, then let Main{Create} manage its GitHub Actions runner. Start with Raspberry Pi OS 64-bit for the first end-to-end test.</p>
 <div class="docs-notice"><strong>Alpha software.</strong> The Linux ARM64 installer and controller-managed runner provisioning are implemented for homelab testing, but fresh-device pairing, automatic runner registration, and reboot recovery still need physical acceptance testing. There is no public hosted controller or universal installation endpoint.</div>
 <div class="docs-pills"><a href="#prepare">Start the Pi quickstart ↓</a><a href="#pair">Already installed? Pair a builder →</a></div>
 
@@ -46,7 +46,7 @@
 </section>
 
 <section id="install" class="docs-section"><div class="section-label">02 · INSTALL</div><h2>Install the Host Service</h2>
-<p>Once the Pi is running and you have signed in through SSH, supply the HTTPS address of <em>your own</em> TinkerTunnel controller. The installer comes from that controller, not from this marketing website.</p>
+<p>Once the Pi is running and you have signed in through SSH, supply the HTTPS address of <em>your own</em> Main{Create} controller. The installer comes from that controller, not from this marketing website.</p>
 <label class="field-label" for="controllerUrl">Your controller HTTPS origin</label>
 <div class="docs-input-row"><input id="controllerUrl" type="url" value="" placeholder="https://controller.example.com" spellcheck="false" autocomplete="url"><button type="button" id="prepareCommand" class="btn primary">Prepare command</button></div>
 <p id="commandNote" role="status" class="fineprint">Enter the trusted controller URL to generate your one-command install.</p>
@@ -56,10 +56,10 @@
 </section>
 
 <section id="pair" class="docs-section"><div class="section-label">03 · ENROLL</div><h2>Discover and pair the builder</h2>
-<ol><li>Sign in to your TinkerTunnel controller's admin portal. Go to <strong>Builders → Add a Build Machine</strong>.</li>
+<ol><li>Sign in to your Main{Create} controller's admin portal. Go to <strong>Builders → Add a Build Machine</strong>.</li>
 <li>Choose <strong>Find nearby hosts (mDNS)</strong>. If discovery is unavailable, enter the Pi's <code>hostname.local</code> or its IP address manually. mDNS generally does not traverse VLANs or container bridges without additional networking.</li>
 <li>Click <strong>Read SSH fingerprint</strong>. On the Pi, independently read the key fingerprint with the command below and confirm it matches. Do not proceed if they differ.</li>
-<li>Enter the <strong>Pi's local Linux username and password</strong> from Raspberry Pi Imager, not your TinkerTunnel portal password. Select <strong>Pair this host</strong>. The controller performs one SSH pairing and the host stores a unique management credential.</li></ol>
+<li>Enter the <strong>Pi's local Linux username and password</strong> from Raspberry Pi Imager, not your Main{Create} portal password. Select <strong>Pair this host</strong>. The controller performs one SSH pairing and the host stores a unique management credential.</li></ol>
 <div class="code-row"><code>ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub</code><button type="button" class="copy-code" data-copy="ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub">Copy</button></div>
 <p class="fineprint">The portal does not retain your Linux password after pairing. The enrolled host connects outbound over HTTPS. Initial pairing requires SSH from controller to Pi on TCP port 22.</p>
 </section>
@@ -67,18 +67,18 @@
 <section id="runners" class="docs-section"><div class="section-label">04 · PROVISION</div><h2>Let the controller configure GitHub Actions</h2>
 <ol><li>Wait until the paired host is listed as <strong>Online</strong> in Builders. Its operating system, architecture, and detected tools should appear.</li>
 <li>In the host's Manage column, select <strong>Provision GitHub runner</strong>.</li>
-<li>TinkerTunnel uses the selected GitHub organization to request a short-lived runner registration token, assigns labels from detected capabilities, and instructs the host to install the official runner. The Pi does not need permanent GitHub credentials.</li>
+<li>Main{Create} uses the selected GitHub organization to request a short-lived runner registration token, assigns labels from detected capabilities, and instructs the host to install the official runner. The Pi does not need permanent GitHub credentials.</li>
 <li>Confirm that the runner appears in GitHub's organization Actions runner list, and check the Host provisioning activity panel for completion. Then reboot the Pi and verify both the Host Service and runner return online.</li></ol>
 <div class="docs-notice"><strong>Access requirement:</strong> the connected GitHub App and authorized account must be allowed to manage organization self-hosted runners. GitHub can reject provisioning when that permission has not been granted. A successful controller action alone does not prove a real workflow build passed.</div>
 </section>
 
 <section id="github" class="docs-section"><div class="section-label">05 · SOURCE</div><h2>Connect a GitHub organization</h2>
-<p>In the controller, use <strong>Settings → GitHub Connection</strong>. Complete GitHub authorization, select an organization where the TinkerTunnel GitHub App is installed, and ensure repository access is available. TinkerTunnel synchronizes accessible repositories automatically.</p>
+<p>In the controller, use <strong>Settings → GitHub Connection</strong>. Complete GitHub authorization, select an organization where the Main{Create} GitHub App is installed, and ensure repository access is available. Main{Create} synchronizes accessible repositories automatically.</p>
 <p>Read access to repository contents is needed for workflow and project-requirement detection. Managing self-hosted runners is a separate permission. You do not enter GitHub tokens on each builder.</p>
 </section>
 
 <section id="projects" class="docs-section"><div class="section-label">06 · COVERAGE</div><h2>Track project requirements automatically</h2>
-<p>TinkerTunnel can infer some requirements from GitHub Actions workflows. To pin OS, architecture, and SDK versions reliably, add an optional <code>.tinkertunnel/project.json</code> file to a repository:</p>
+<p>Main{Create} can infer some requirements from GitHub Actions workflows. To pin OS, architecture, and SDK versions reliably, add an optional <code>.tinkertunnel/project.json</code> file to a repository:</p>
 <div class="code-row code-block"><pre><code>{
   "schema": 1,
   "targets": [
@@ -101,6 +101,6 @@
 <details><summary>GitHub runner registration fails</summary><p>Check the controller’s Host provisioning activity, its GitHub organization selection, and GitHub App runner permissions. Do not manually register a second Actions runner on the Pi to work around an incomplete controller action.</p></details></div>
 <p class="fineprint">Never post the contents of <code>/var/lib/tinkertunnel/host.json</code>: it contains a private host credential.</p>
 </section>
-<nav class="docs-next" aria-label="Next steps"><a href="/"><span>Back to TinkerTunnel</span><strong>Explore the product ←</strong></a><a href="#prepare"><span>Start again</span><strong>Prepare another builder ↑</strong></a></nav>
+<nav class="docs-next" aria-label="Next steps"><a href="/"><span>Back to Main{Create}</span><strong>Explore the product ←</strong></a><a href="#prepare"><span>Start again</span><strong>Prepare another builder ↑</strong></a></nav>
 </article></main>
-<footer class="wrap"><span>© 2026 TinkerTunnel · Alpha documentation</span><span><a href="/">Product</a> · <a href="https://github.com/TinkerTunnel">GitHub</a></span></footer></body></html>
+<footer class="wrap"><span>© 2026 Main{Create} · Alpha documentation</span><span><a href="/">Product</a> · <a href="https://github.com/maincreate">GitHub</a></span></footer></body></html>

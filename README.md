@@ -1,14 +1,10 @@
-# TinkerTunnel website
+# Main{Create} website
 
-Public static site for **tinkertunnel.com** via GitHub Pages.
+Static public-facing website for **maincreate.com**. The site includes product information and builder documentation.
 
-- Repository: `TinkerTunnel/tinkertunnel.github.io`
-- Product source: `TinkerTunnel/tinkertunnel` (separate repository)
-- Hosting: GitHub Pages, branch deployment from `main` at `/` (no GitHub Actions required)
-- Custom domain: `tinkertunnel.com` configured through `CNAME`
+- Product code lives in [main-platform](https://github.com/maincreate/main-platform).
+- Publish the repository root as static files. `CNAME` records the intended custom domain.
 
-The site is intentionally static and does not host the MCP gateway or managed relay.
+## Visual direction
 
-## Publishing
-
-Commit updates directly to `main` or merge reviewed pull requests. In repository Settings → Pages choose **Deploy from a branch**, `main`, `/ (root)`. Configure DNS with the registrar and enable HTTPS when the certificate is ready. The repository must be public for GitHub Pages on a GitHub Free organization.
+Use warm light surfaces, clear typography, and restrained colors drawn from water, earth, wood, and air. The site should feel open and made for creating. Use terminal styling only where it helps distinguish a command or output.
