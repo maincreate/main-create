@@ -45,10 +45,28 @@ def check_html(path: pathlib.Path) -> None:
         if not target.is_file() or ROOT not in target.resolve().parents:
             raise ValueError(f"{path.relative_to(ROOT)}: broken local reference {reference!r}")
 
+def check_brand_layout() -> None:
+    """Prevent a duplicate logo icon beside the website wordmark."""
+    public = (ROOT / "index.html").read_text(encoding="utf-8")
+    docs = (ROOT / "docs/index.html").read_text(encoding="utf-8")
+    if '<header class="site-header">' not in public or '<div class="preview-top">' not in public:
+        raise ValueError("Expected site branding sections not found")
+    site_header = public.split('<header class="site-header">', 1)[1].split('</header>', 1)[0]
+    workspace = public.split('<div class="preview-top">', 1)[1].split('<div class="preview-body">', 1)[0]
+    docs_header = docs.split('<header class="nav wrap">', 1)[1].split('</header>', 1)[0]
+    if any('<img' in header or 'brand-icon' in header for header in (site_header, docs_header)):
+        raise ValueError("Navigation must show the styled Main{Create} wordmark without an icon")
+    if 'class="brand-name"' not in site_header or 'class="brand-name"' not in docs_header:
+        raise ValueError("Navigation wordmark is missing")
+    if 'Main{Create}' in workspace or 'class="preview-logo"' not in workspace or '/ WORKSPACE' not in workspace:
+        raise ValueError("Workspace preview must contain the symbol plus / WORKSPACE only")
+
+
 def main() -> None:
     domain = (ROOT / "CNAME").read_text(encoding="utf-8").strip()
     if domain != "maincreate.com":
         raise ValueError("CNAME must contain exactly maincreate.com")
+    check_brand_layout()
     for relative in FILES:
         source = ROOT / relative
         if not source.is_file():
