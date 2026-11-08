@@ -31,9 +31,9 @@
 <h3>Raspberry Pi OS Lite (64-bit)</h3>
 <ol><li><a href="https://www.raspberrypi.com/software/" target="_blank" rel="noopener noreferrer">Install Raspberry Pi Imager</a> on your computer and choose the Pi model.</li>
 <li>Choose <strong>Raspberry Pi OS Lite (64-bit)</strong> as the image and your microSD card as the target. <strong>Imaging erases the selected card</strong>—back up any important files first.</li>
-<li>Under Imager’s OS customisation, set a distinct hostname (for example <code>tt-pi-builder</code>), a Linux username and password, network settings if necessary, and <strong>enable SSH with password authentication</strong>.</li>
+<li>Under Imager’s OS customisation, set a distinct hostname (for example <code>maincreate-pi-builder</code>), a Linux username and password, network settings if necessary, and <strong>enable SSH with password authentication</strong>.</li>
 <li>Write the image, put the card into the Pi, connect network and power, then SSH into the host using the credentials you just created. For your first test, a wired connection reduces discovery problems.</li></ol>
-<div class="code-row"><code>ssh &lt;linux-user&gt;@tt-pi-builder.local</code><button class="copy-code" data-copy="ssh &lt;linux-user&gt;@tt-pi-builder.local" type="button">Copy</button></div>
+<div class="code-row"><code>ssh &lt;linux-user&gt;@maincreate-pi-builder.local</code><button class="copy-code" data-copy="ssh &lt;linux-user&gt;@maincreate-pi-builder.local" type="button">Copy</button></div>
 <p class="fineprint">If <code>.local</code> does not resolve across your network, use the Pi's IP address instead. The Pi needs to reach the controller's trusted HTTPS endpoint.</p></div>
 <div class="platform-panel" id="panel-linux" role="tabpanel" aria-labelledby="tab-linux" hidden>
 <div class="docs-status planned">Native installer planned</div><h3>Linux x64</h3><p>Keep a supported Linux distribution updated and enable network connectivity. A dedicated Linux x64 release package, one-command installer, and validation are not yet provided. Do not run the ARM64 installer on an x64 machine.</p>
@@ -51,8 +51,8 @@
 <div class="docs-input-row"><input id="controllerUrl" type="url" value="" placeholder="https://controller.example.com" spellcheck="false" autocomplete="url"><button type="button" id="prepareCommand" class="btn primary">Prepare command</button></div>
 <p id="commandNote" role="status" class="fineprint">Enter the trusted controller URL to generate your one-command install.</p>
 <div class="code-row"><code id="installCommand">Enter your controller URL above.</code><button class="copy-code" type="button" id="copyInstall" disabled>Copy</button></div>
-<p>Installation requests sudo, installs Avahi and OpenSSH as needed, downloads the Linux ARM64 Host Service, verifies the provided checksum, and enables <code>tinkertunnel-host.service</code>. <strong>It does not register a GitHub runner yet.</strong></p>
-<div class="code-row"><code>systemctl status tinkertunnel-host --no-pager</code><button type="button" class="copy-code" data-copy="systemctl status tinkertunnel-host --no-pager">Copy</button></div>
+<p>Installation requests sudo, installs Avahi and OpenSSH as needed, downloads the Linux ARM64 Host Service, verifies the provided checksum, and enables <code>maincreate-host.service</code>. <strong>It does not register a GitHub runner yet.</strong></p>
+<div class="code-row"><code>systemctl status maincreate-host --no-pager</code><button type="button" class="copy-code" data-copy="systemctl status maincreate-host --no-pager">Copy</button></div>
 </section>
 
 <section id="pair" class="docs-section"><div class="section-label">03 · ENROLL</div><h2>Discover and pair the builder</h2>
@@ -78,7 +78,7 @@
 </section>
 
 <section id="projects" class="docs-section"><div class="section-label">06 · COVERAGE</div><h2>Track project requirements automatically</h2>
-<p>Main{Create} can infer some requirements from GitHub Actions workflows. To pin OS, architecture, and SDK versions reliably, add an optional <code>.tinkertunnel/project.json</code> file to a repository:</p>
+<p>Main{Create} can infer some requirements from GitHub Actions workflows. To pin OS, architecture, and SDK versions reliably, add an optional <code>.maincreate/project.json</code> file to a repository:</p>
 <div class="code-row code-block"><pre><code>{
   "schema": 1,
   "targets": [
@@ -95,11 +95,11 @@
 </section>
 
 <section id="diagnostics" class="docs-section"><div class="section-label">07 · VERIFY</div><h2>Troubleshooting your first builder</h2>
-<div class="faq"><details><summary>Pi does not appear in discovery</summary><p>Check that the Host Service and Avahi are running and the Pi is on a reachable network. mDNS may not cross VLANs or reach the controller container. Use the Pi IP address to pair manually.</p><div class="code-row"><code>avahi-browse -rt _tinkertunnel._tcp</code><button type="button" class="copy-code" data-copy="avahi-browse -rt _tinkertunnel._tcp">Copy</button></div></details>
+<div class="faq"><details><summary>Pi does not appear in discovery</summary><p>Check that the Host Service and Avahi are running and the Pi is on a reachable network. mDNS may not cross VLANs or reach the controller container. Use the Pi IP address to pair manually.</p><div class="code-row"><code>avahi-browse -rt _maincreate._tcp</code><button type="button" class="copy-code" data-copy="avahi-browse -rt _maincreate._tcp">Copy</button></div></details>
 <details><summary>Host fails to pair or the fingerprint changes</summary><p>Ensure SSH password authentication is enabled for the Pi's user and the controller can reach TCP/22. Independently verify the Ed25519 fingerprint from the Pi's local SSH host key. A changed fingerprint can indicate re-imaging or an unexpected device; investigate before proceeding.</p></details>
-<details><summary>Host is paired but offline</summary><p>Confirm outbound HTTPS access to your controller, certificate trust, DNS resolution, and service logs. Pairing alone does not imply the heartbeat is healthy.</p><div class="code-row"><code>journalctl -u tinkertunnel-host -n 80 --no-pager</code><button type="button" class="copy-code" data-copy="journalctl -u tinkertunnel-host -n 80 --no-pager">Copy</button></div></details>
+<details><summary>Host is paired but offline</summary><p>Confirm outbound HTTPS access to your controller, certificate trust, DNS resolution, and service logs. Pairing alone does not imply the heartbeat is healthy.</p><div class="code-row"><code>journalctl -u maincreate-host -n 80 --no-pager</code><button type="button" class="copy-code" data-copy="journalctl -u maincreate-host -n 80 --no-pager">Copy</button></div></details>
 <details><summary>GitHub runner registration fails</summary><p>Check the controller’s Host provisioning activity, its GitHub organization selection, and GitHub App runner permissions. Do not manually register a second Actions runner on the Pi to work around an incomplete controller action.</p></details></div>
-<p class="fineprint">Never post the contents of <code>/var/lib/tinkertunnel/host.json</code>: it contains a private host credential.</p>
+<p class="fineprint">Never post the contents of <code>/var/lib/maincreate/host.json</code>: it contains a private host credential.</p>
 </section>
 <nav class="docs-next" aria-label="Next steps"><a href="/"><span>Back to Main{Create}</span><strong>Explore the product ←</strong></a><a href="#prepare"><span>Start again</span><strong>Prepare another builder ↑</strong></a></nav>
 </article></main>
