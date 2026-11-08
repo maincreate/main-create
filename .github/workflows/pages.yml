@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - "design/**"
+      - "fix/**"
     paths:
       - "index.html"
       - "style.css"
