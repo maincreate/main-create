@@ -1,0 +1,60 @@
+name: Publish Main{Create} website
+
+on:
+  push:
+    branches:
+      - main
+      - "design/**"
+    paths:
+      - "index.html"
+      - "style.css"
+      - "CNAME"
+      - "docs/**"
+      - "scripts/build-site.py"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: maincreate-public-pages
+  cancel-in-progress: false
+
+jobs:
+  build-and-publish:
+    # The existing organization CI runner labels are used to build the site.
+    # Do not run untrusted pull_request code on this persistent self-hosted runner.
+    runs-on: [self-hosted, ci, linux-x64]
+    timeout-minutes: 15
+    environment:
+      name: github-pages
+      url: ${{ steps.publish.outputs.page_url }}
+    steps:
+      - name: Check out Main{Create} website
+        uses: actions/checkout@v7
+
+      - name: Validate and assemble site
+        run: |
+          python3 --version
+          python3 scripts/build-site.py
+          test -f _site/index.html
+          test -f _site/docs/index.html
+          test "$(cat _site/CNAME)" = "maincreate.com"
+
+      - name: Configure GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+      - name: Publish to GitHub Pages
+        if: github.ref == 'refs/heads/main'
+        id: publish
+        uses: actions/deploy-pages@v4

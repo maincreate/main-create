@@ -1,8 +1,88 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Main{Create} connects AI assistants to your code, builders, and real devices."><title>Main{Create} — Connect your AI. Build something real.</title><link rel="stylesheet" href="/style.css"></head>
-<body><header class="nav wrap"><a class="brand" href="/" aria-label="Main{Create} home">Main{Create}</a><nav aria-label="Main"><a href="#how">How it works</a><a href="/docs/">Documentation</a><a href="#principles">Why Main{Create}</a><a href="https://github.com/maincreate">GitHub ↗</a></nav></header>
-<main><section class="hero wrap"><div class="eyebrow"><span class="dot"></span> Open-source maker platform · In development</div><h1>Your ideas.<br>Your AI.<br><em>Your hardware.</em></h1><p class="lead">Bring an AI assistant into your workshop. Connect source code, inexpensive build machines, and real devices—then build, test, and deploy what you imagine.</p><div class="actions"><a class="btn primary" href="https://github.com/maincreate">Follow development ↗</a><a class="btn secondary" href="/docs/">Get started: builder docs →</a></div><p class="note">Early alpha. Self-hosted Linux ARM64 hosts can be tested with your own controller; no public managed service is available yet.</p></section>
-<section class="band" id="how"><div class="wrap"><div class="section-label">THE IDEA</div><h2>From conversation to creation.</h2><div class="steps"><article><span class="step">01</span><h3>Connect</h3><p>Pair a compatible AI agent with your workbench through a secure, permissioned MCP connection.</p></article><article><span class="step">02</span><h3>Build</h3><p>Use the computers and small boards you already have to compile, test, and iterate on projects.</p></article><article><span class="step">03</span><h3>Ship</h3><p>Flash devices, track evidence, and eventually distribute validated firmware updates over the air.</p></article></div></div></section>
-<section class="wrap section" id="principles"><div class="section-label">MADE FOR TINKERERS</div><h2>A workbench, not a server farm.</h2><div class="features"><article><h3>Use what you own</h3><p>Start with a Raspberry Pi or existing computer. No expensive AI workstation required.</p></article><article><h3>Bring your agent</h3><p>Designed for standard MCP clients, without tying your inventions to a single AI provider.</p></article><article><h3>Your workshop, your rules</h3><p>Local-first execution, scoped tool permissions, and approvals for physical-device actions.</p></article><article><h3>Know what happened</h3><p>Track each request from source revision to build artifact, deployment, and validation.</p></article></div></section>
-<section class="closing"><div class="wrap"><div class="section-label">COMING TO LIFE</div><h2>Build something real.</h2><p>Main{Create} is being built in the open-source spirit. The distributed Linux ARM64 builder is in alpha testing. Follow the documentation to prepare and pair a host; additional platforms and embedded deployment workflows are in development.</p><a class="btn primary" href="/docs/">Read the setup documentation →</a></div></section></main>
-<footer class="wrap"><span>© 2026 Main{Create}</span><span>Connect your AI. Build something real.</span></footer></body></html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f6f7">
+  <meta name="description" content="Main{Create} brings GitHub, AI assistants, self-hosted build machines, and real devices into one permissioned maker workspace.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Main{Create} — From idea to real-world build">
+  <meta property="og:description" content="Connect source code, your AI agent, and the machines in your workshop. Build on your terms.">
+  <title>Main{Create} — From idea to real-world build</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <header class="site-header">
+    <div class="wrap header-inner">
+      <a class="brand" href="/" aria-label="Main{Create} home"><span class="brand-symbol" aria-hidden="true">M<span>{}</span></span><span>Main{Create}</span></a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#platform">Platform</a>
+        <a href="#workflow">How it works</a>
+        <a href="/docs/">Documentation</a>
+        <a class="nav-github" href="https://github.com/maincreate" target="_blank" rel="noopener noreferrer">GitHub <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line" aria-hidden="true"></span> OPEN SOURCE · SELF-HOSTED · EARLY ALPHA</p>
+        <h1 id="hero-title">Ideas don't stop at <span class="highlight">code.</span></h1>
+        <p class="hero-lead">Main{Create} connects your AI, your source, and the machines in your workshop—so you can build software for real things, on hardware you already own.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="/docs/">Get started with a builder <span aria-hidden="true">↗</span></a>
+          <a class="btn btn-outline" href="#workflow">See how it works <span aria-hidden="true">↓</span></a>
+        </div>
+        <p class="hero-footnote"><span class="status-light" aria-hidden="true"></span> Linux ARM64 builder alpha · Bring your own controller · No hosted signup yet</p>
+      </div>
+      <div class="preview" aria-label="Illustration of the Main{Create} build workflow">
+        <div class="preview-top"><span class="preview-title"><span class="preview-logo" aria-hidden="true">M{}</span> Main{Create} <span class="preview-context">/ WORKSPACE</span></span><span class="preview-label">CONCEPT VIEW</span></div>
+        <div class="preview-body">
+          <div class="preview-heading"><div><span class="overline">YOUR WORKBENCH</span><h2>One connected workflow.</h2></div><span class="preview-state">Local-first</span></div>
+          <div class="workflow-cards">
+            <div class="workflow-card"><span class="node-icon" aria-hidden="true">01</span><div><strong>Source</strong><small>GitHub repository</small></div><span class="node-symbol" aria-hidden="true">⌘</span></div>
+            <div class="flow-connector" aria-hidden="true"><span></span></div>
+            <div class="workflow-card active"><span class="node-icon" aria-hidden="true">02</span><div><strong>Build machine</strong><small>Self-hosted ARM64</small></div><span class="node-symbol" aria-hidden="true">▣</span></div>
+            <div class="flow-connector" aria-hidden="true"><span></span></div>
+            <div class="workflow-card"><span class="node-icon" aria-hidden="true">03</span><div><strong>Connected device</strong><small>Discovery + inventory</small></div><span class="node-symbol" aria-hidden="true">◈</span></div>
+          </div>
+          <div class="preview-bottom"><span><span class="preview-dot" aria-hidden="true"></span> Your controller. Your machines. Your approvals.</span><span class="preview-version">M{} / ALPHA</span></div>
+        </div>
+        <p class="preview-caption">Illustrative workflow, not live device or build telemetry.</p>
+      </div>
+    </section>
+    <section class="trust-strip" aria-label="Platform principles"><div class="wrap trust-inner"><span>YOUR SOURCE</span><span class="trust-sep" aria-hidden="true">+</span><span>YOUR AGENT</span><span class="trust-sep" aria-hidden="true">+</span><span>YOUR HARDWARE</span><span class="trust-sep" aria-hidden="true">=</span><strong>YOUR WORKSPACE</strong></div></section>
+    <section class="section wrap" id="platform" aria-labelledby="platform-heading">
+      <div class="section-intro"><div><p class="eyebrow">THE PLATFORM</p><h2 id="platform-heading">A home for everything you create.</h2></div><p>Stop piecing together disconnected instructions, build hosts, and device notes. Main{Create} is designed to make the journey from repository to hardware visible and manageable.</p></div>
+      <div class="capability-grid">
+        <article class="capability"><span class="cap-icon" aria-hidden="true">⌘</span><div class="cap-meta">01 / SOURCE</div><h3>GitHub, connected</h3><p>Organize projects around the code you already write, with organization-level integration and self-hosted GitHub Actions runners.</p><span class="feature-tag">In alpha</span></article>
+        <article class="capability"><span class="cap-icon" aria-hidden="true">⌁</span><div class="cap-meta">02 / AGENTS</div><h3>Build with your AI</h3><p>Connect compatible assistants through a scoped MCP interface, keeping execution and approvals in your own environment.</p><span class="feature-tag">In development</span></article>
+        <article class="capability"><span class="cap-icon" aria-hidden="true">▣</span><div class="cap-meta">03 / BUILDERS</div><h3>Use the machines you own</h3><p>Enroll a Raspberry Pi or compatible build host. See machine status and provision supported runners without a dedicated cloud build fleet.</p><span class="feature-tag">ARM64 alpha</span></article>
+        <article class="capability"><span class="cap-icon" aria-hidden="true">◈</span><div class="cap-meta">04 / DEVICES</div><h3>Bring hardware into view</h3><p>Discover USB-attached devices, associate them with builders, and build toward verified firmware flashing and device logs.</p><span class="feature-tag feature-tag-muted">Flashing planned</span></article>
+      </div>
+    </section>
+    <section class="workflow-band" id="workflow" aria-labelledby="workflow-heading">
+      <div class="wrap workflow-layout">
+        <div class="workflow-copy"><p class="eyebrow">HOW IT WORKS</p><h2 id="workflow-heading">From first idea to first boot.</h2><p>Start with your preferred editor or AI assistant. Main{Create} is the self-hosted coordination layer between your code, builders, and physical devices.</p><a class="text-link" href="/docs/">Read the builder setup guide <span aria-hidden="true">↗</span></a></div>
+        <ol class="process-list">
+          <li><span class="process-number">01</span><div><h3>Connect your GitHub organization</h3><p>Keep projects and runner automation tied to the organization that owns the code.</p></div></li>
+          <li><span class="process-number">02</span><div><h3>Enroll a build machine</h3><p>Start with supported Linux ARM64 hardware and provision a self-hosted GitHub Actions runner.</p></div></li>
+          <li><span class="process-number">03</span><div><h3>Build and inspect</h3><p>Follow jobs, artifacts, connected hardware, and approval states in one workspace.</p></div></li>
+          <li><span class="process-number">04</span><div><h3>Verify and deploy safely</h3><p>Hardware-aware flashing, broader SDK installations, and end-to-end agent orchestration are being developed.</p></div></li>
+        </ol>
+      </div>
+    </section>
+    <section class="section wrap" id="principles" aria-labelledby="principles-heading">
+      <div class="section-intro"><div><p class="eyebrow">BUILT FOR REAL WORKBENCHES</p><h2 id="principles-heading">More making. Less infrastructure.</h2></div><p>You don't need to replace your workflow or rent an entire server farm. Put your existing devices and computers to work, with a clear boundary between intent and execution.</p></div>
+      <div class="principles-grid">
+        <article><span aria-hidden="true" class="principle-index">01</span><h3>Local-first by design</h3><p>Your controller, builders, credentials, and device operations stay in infrastructure you operate.</p></article>
+        <article><span aria-hidden="true" class="principle-index">02</span><h3>Permissioned, not arbitrary</h3><p>AI access should be constrained to explicit capabilities, with approval before sensitive physical-device actions.</p></article>
+        <article><span aria-hidden="true" class="principle-index">03</span><h3>Traceable from source</h3><p>Know which revision produced a build, which host ran it, and what happened next.</p></article>
+      </div>
+    </section>
+    <section class="closing-section"><div class="wrap closing-inner"><div><p class="eyebrow">YOUR NEXT BUILD STARTS HERE</p><h2>Make it real with Main{Create}.</h2><p>The project is taking shape. Explore the alpha documentation, prepare a supported build machine, and follow development as we expand device and toolchain support.</p></div><div class="closing-actions"><a class="btn btn-primary" href="/docs/">Explore documentation <span aria-hidden="true">↗</span></a><a class="btn btn-outline" href="https://github.com/maincreate" target="_blank" rel="noopener noreferrer">Follow on GitHub <span aria-hidden="true">↗</span></a></div></div></section>
+  </main>
+  <footer class="site-footer"><div class="wrap footer-inner"><a class="brand footer-brand" href="/" aria-label="Main{Create} home"><span class="brand-symbol" aria-hidden="true">M<span>{}</span></span><span>Main{Create}</span></a><p>© 2026 Main{Create} · Build something real.</p><nav aria-label="Footer"><a href="/docs/">Documentation</a><a href="https://github.com/maincreate" target="_blank" rel="noopener noreferrer">GitHub</a></nav></div></footer>
+</body>
+</html>
