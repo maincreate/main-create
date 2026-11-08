@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">Main{Create} unified M mark</title>
+  <defs>
+    <linearGradient id="ribbon" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#245e84"/>
+      <stop offset="51%" stop-color="#168bb1"/>
+      <stop offset="100%" stop-color="#1cb8b9"/>
+    </linearGradient>
+    <linearGradient id="facet" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0%" stop-color="#2579a3"/>
+      <stop offset="100%" stop-color="#16bec0"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#ribbon)" d="M14 94 V34 C14 20 28 14 39 23 L64 43 L89 23 C100 14 114 20 114 34 V94 C114 107 90 107 90 94 V57 L72 74 C67 78 61 78 56 74 L38 57 V94 C38 107 14 107 14 94 Z"/>
+  <path fill="url(#facet)" d="M39 23 64 43 89 23 C96 17 105 18 110 25 L70 59 C66 62 62 62 58 59 L18 25 C23 18 32 17 39 23Z" opacity=".9"/>
+  <path fill="#f7fcfd" d="M32 45 59 66 C62 69 66 69 69 66 L96 45 L96 54 71 75 C67 79 61 79 57 75 L32 54Z" opacity=".95"/>
+</svg>

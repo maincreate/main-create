@@ -8,6 +8,7 @@ on:
     paths:
       - "index.html"
       - "style.css"
+      - "assets/**"
       - "CNAME"
       - "docs/**"
       - "scripts/build-site.py"
@@ -24,14 +25,11 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-publish:
-    # The existing organization CI runner labels are used to build the site.
-    # Do not run untrusted pull_request code on this persistent self-hosted runner.
+  build:
+    # Branch validation must not require the production github-pages environment.
+    # Run the known build on the existing organization's self-hosted build runner.
     runs-on: [self-hosted, ci, linux-x64]
     timeout-minutes: 15
-    environment:
-      name: github-pages
-      url: ${{ steps.publish.outputs.page_url }}
     steps:
       - name: Check out Main{Create} website
         uses: actions/checkout@v7
@@ -42,6 +40,7 @@ jobs:
           python3 scripts/build-site.py
           test -f _site/index.html
           test -f _site/docs/index.html
+          test -f _site/assets/maincreate-mark.svg
           test "$(cat _site/CNAME)" = "maincreate.com"
 
       - name: Configure GitHub Pages
@@ -54,7 +53,15 @@ jobs:
         with:
           path: _site
 
+  publish:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
       - name: Publish to GitHub Pages
-        if: github.ref == 'refs/heads/main'
-        id: publish
+        id: deploy
         uses: actions/deploy-pages@v4
