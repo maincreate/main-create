@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="TinkerTunnel documentation: prepare a build host, enroll builders, connect GitHub, and track project requirements.">
+<title>Documentation — TinkerTunnel</title><link rel="stylesheet" href="/style.css"><link rel="stylesheet" href="/docs/docs.css"><script src="/docs/docs.js" defer></script></head>
+<body><header class="nav wrap"><a class="brand" href="/" aria-label="TinkerTunnel home"><span class="mark">T<span>↗</span></span> TinkerTunnel</a>
+<nav aria-label="Main"><a href="/">Product</a><a aria-current="page" href="/docs/">Documentation</a><a href="https://github.com/TinkerTunnel" target="_blank" rel="noopener noreferrer">GitHub ↗</a></nav></header>
+<main class="docs-layout wrap">
+<aside class="docs-sidebar" aria-label="Documentation sections"><div class="docs-sidebar-title">GET STARTED</div>
+<nav class="docs-links" aria-label="Page sections">
+<a href="#overview" class="active">Overview</a><a href="#prepare">Prepare a builder</a><a href="#install">Install Host Service</a>
+<a href="#pair">Discover and pair</a><a href="#runners">Provision a runner</a><a href="#github">Connect GitHub</a>
+<a href="#projects">Project requirements</a><a href="#diagnostics">Troubleshooting</a></nav>
+<div class="docs-sidebar-foot"><strong>Current release</strong><span>Distributed Linux ARM64 alpha</span><span>First-run testing guide</span></div></aside>
+<article class="docs-main">
+<div class="eyebrow">DOCUMENTATION / DISTRIBUTED BUILDS</div>
+<h1 id="overview">Build with the machines you already have.</h1>
+<p class="docs-intro">Install a lightweight service on a host, discover and pair it from your controller, then let TinkerTunnel manage its GitHub Actions runner. Start with Raspberry Pi OS 64-bit for the first end-to-end test.</p>
+<div class="docs-notice"><strong>Alpha software.</strong> The Linux ARM64 installer and controller-managed runner provisioning are implemented for homelab testing, but fresh-device pairing, automatic runner registration, and reboot recovery still need physical acceptance testing. There is no public hosted controller or universal installation endpoint.</div>
+<div class="docs-pills"><a href="#prepare">Start the Pi quickstart ↓</a><a href="#pair">Already installed? Pair a builder →</a></div>
+
+<section id="prepare" class="docs-section"><div class="section-label">01 · PREPARE</div><h2>Prepare your build machine</h2>
+<p>Choose a platform below. These tabs describe platform readiness; they do not imply that every installer is already released.</p>
+<div class="platform-tabs" role="tablist" aria-label="Builder operating system">
+<button type="button" role="tab" id="tab-pi" aria-controls="panel-pi" aria-selected="true" tabindex="0" data-platform="pi">Raspberry Pi · ARM64</button>
+<button type="button" role="tab" id="tab-linux" aria-controls="panel-linux" aria-selected="false" tabindex="-1" data-platform="linux">Linux · x64</button>
+<button type="button" role="tab" id="tab-mac" aria-controls="panel-mac" aria-selected="false" tabindex="-1" data-platform="mac">macOS</button>
+<button type="button" role="tab" id="tab-windows" aria-controls="panel-windows" aria-selected="false" tabindex="-1" data-platform="windows">Windows</button>
+</div>
+<div class="platform-panel" id="panel-pi" role="tabpanel" aria-labelledby="tab-pi">
+<div class="docs-status"><span class="status-dot"></span> Alpha installer available</div>
+<h3>Raspberry Pi OS Lite (64-bit)</h3>
+<ol><li><a href="https://www.raspberrypi.com/software/" target="_blank" rel="noopener noreferrer">Install Raspberry Pi Imager</a> on your computer and choose the Pi model.</li>
+<li>Choose <strong>Raspberry Pi OS Lite (64-bit)</strong> as the image and your microSD card as the target. <strong>Imaging erases the selected card</strong>—back up any important files first.</li>
+<li>Under Imager’s OS customisation, set a distinct hostname (for example <code>tt-pi-builder</code>), a Linux username and password, network settings if necessary, and <strong>enable SSH with password authentication</strong>.</li>
+<li>Write the image, put the card into the Pi, connect network and power, then SSH into the host using the credentials you just created. For your first test, a wired connection reduces discovery problems.</li></ol>
+<div class="code-row"><code>ssh &lt;linux-user&gt;@tt-pi-builder.local</code><button class="copy-code" data-copy="ssh &lt;linux-user&gt;@tt-pi-builder.local" type="button">Copy</button></div>
+<p class="fineprint">If <code>.local</code> does not resolve across your network, use the Pi's IP address instead. The Pi needs to reach the controller's trusted HTTPS endpoint.</p></div>
+<div class="platform-panel" id="panel-linux" role="tabpanel" aria-labelledby="tab-linux" hidden>
+<div class="docs-status planned">Native installer planned</div><h3>Linux x64</h3><p>Keep a supported Linux distribution updated and enable network connectivity. A dedicated Linux x64 release package, one-command installer, and validation are not yet provided. Do not run the ARM64 installer on an x64 machine.</p>
+<p>The existing JavaScript development Host Service may be used for experimental enrollment with Node.js 22+, but it is not equivalent to the native managed runner workflow.</p></div>
+<div class="platform-panel" id="panel-mac" role="tabpanel" aria-labelledby="tab-mac" hidden>
+<div class="docs-status planned">Native installer planned</div><h3>macOS</h3><p>Prepare a Mac with a compatible macOS version and Xcode if you want Apple application builds. The native launchd installer and controller-managed GitHub runner adapter are not part of the Linux ARM64 alpha. Do not use the Pi installation command.</p>
+<p>Projects requiring Xcode will remain unmatched until a compatible managed macOS runner is online and reports that toolchain.</p></div>
+<div class="platform-panel" id="panel-windows" role="tabpanel" aria-labelledby="tab-windows" hidden>
+<div class="docs-status planned">Native installer planned</div><h3>Windows x64</h3><p>A Windows Service installer and managed GitHub runner provisioning flow are planned. The Linux ARM64 binary and systemd setup do not work on Windows.</p><p>Windows-specific toolchain inventory and verified unattended setup will be documented when released.</p></div>
+</section>
+
+<section id="install" class="docs-section"><div class="section-label">02 · INSTALL</div><h2>Install the Host Service</h2>
+<p>Once the Pi is running and you have signed in through SSH, supply the HTTPS address of <em>your own</em> TinkerTunnel controller. The installer comes from that controller, not from this marketing website.</p>
+<label class="field-label" for="controllerUrl">Your controller HTTPS origin</label>
+<div class="docs-input-row"><input id="controllerUrl" type="url" value="" placeholder="https://controller.example.com" spellcheck="false" autocomplete="url"><button type="button" id="prepareCommand" class="btn primary">Prepare command</button></div>
+<p id="commandNote" role="status" class="fineprint">Enter the trusted controller URL to generate your one-command install.</p>
+<div class="code-row"><code id="installCommand">Enter your controller URL above.</code><button class="copy-code" type="button" id="copyInstall" disabled>Copy</button></div>
+<p>Installation requests sudo, installs Avahi and OpenSSH as needed, downloads the Linux ARM64 Host Service, verifies the provided checksum, and enables <code>tinkertunnel-host.service</code>. <strong>It does not register a GitHub runner yet.</strong></p>
+<div class="code-row"><code>systemctl status tinkertunnel-host --no-pager</code><button type="button" class="copy-code" data-copy="systemctl status tinkertunnel-host --no-pager">Copy</button></div>
+</section>
+
+<section id="pair" class="docs-section"><div class="section-label">03 · ENROLL</div><h2>Discover and pair the builder</h2>
+<ol><li>Sign in to your TinkerTunnel controller's admin portal. Go to <strong>Builders → Add a Build Machine</strong>.</li>
+<li>Choose <strong>Find nearby hosts (mDNS)</strong>. If discovery is unavailable, enter the Pi's <code>hostname.local</code> or its IP address manually. mDNS generally does not traverse VLANs or container bridges without additional networking.</li>
+<li>Click <strong>Read SSH fingerprint</strong>. On the Pi, independently read the key fingerprint with the command below and confirm it matches. Do not proceed if they differ.</li>
+<li>Enter the <strong>Pi's local Linux username and password</strong> from Raspberry Pi Imager, not your TinkerTunnel portal password. Select <strong>Pair this host</strong>. The controller performs one SSH pairing and the host stores a unique management credential.</li></ol>
+<div class="code-row"><code>ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub</code><button type="button" class="copy-code" data-copy="ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub">Copy</button></div>
+<p class="fineprint">The portal does not retain your Linux password after pairing. The enrolled host connects outbound over HTTPS. Initial pairing requires SSH from controller to Pi on TCP port 22.</p>
+</section>
+
+<section id="runners" class="docs-section"><div class="section-label">04 · PROVISION</div><h2>Let the controller configure GitHub Actions</h2>
+<ol><li>Wait until the paired host is listed as <strong>Online</strong> in Builders. Its operating system, architecture, and detected tools should appear.</li>
+<li>In the host's Manage column, select <strong>Provision GitHub runner</strong>.</li>
+<li>TinkerTunnel uses the selected GitHub organization to request a short-lived runner registration token, assigns labels from detected capabilities, and instructs the host to install the official runner. The Pi does not need permanent GitHub credentials.</li>
+<li>Confirm that the runner appears in GitHub's organization Actions runner list, and check the Host provisioning activity panel for completion. Then reboot the Pi and verify both the Host Service and runner return online.</li></ol>
+<div class="docs-notice"><strong>Access requirement:</strong> the connected GitHub App and authorized account must be allowed to manage organization self-hosted runners. GitHub can reject provisioning when that permission has not been granted. A successful controller action alone does not prove a real workflow build passed.</div>
+</section>
+
+<section id="github" class="docs-section"><div class="section-label">05 · SOURCE</div><h2>Connect a GitHub organization</h2>
+<p>In the controller, use <strong>Settings → GitHub Connection</strong>. Complete GitHub authorization, select an organization where the TinkerTunnel GitHub App is installed, and ensure repository access is available. TinkerTunnel synchronizes accessible repositories automatically.</p>
+<p>Read access to repository contents is needed for workflow and project-requirement detection. Managing self-hosted runners is a separate permission. You do not enter GitHub tokens on each builder.</p>
+</section>
+
+<section id="projects" class="docs-section"><div class="section-label">06 · COVERAGE</div><h2>Track project requirements automatically</h2>
+<p>TinkerTunnel can infer some requirements from GitHub Actions workflows. To pin OS, architecture, and SDK versions reliably, add an optional <code>.tinkertunnel/project.json</code> file to a repository:</p>
+<div class="code-row code-block"><pre><code>{
+  "schema": 1,
+  "targets": [
+    {
+      "os": "linux",
+      "arch": "arm64",
+      "tools": [
+        { "name": "esp-idf", "version": "5.5.x" }
+      ]
+    }
+  ]
+}</code></pre><button type="button" class="copy-code" id="copyManifest">Copy</button></div>
+<p>Requirements are alternatives across targets and additive within each target. Active projects with no matching online managed runner get a quiet in-app notice. Projects whose requirements cannot be detected show <strong>Unknown</strong>, not a false incompatibility. You can ignore a project’s alerts without deleting it.</p>
+</section>
+
+<section id="diagnostics" class="docs-section"><div class="section-label">07 · VERIFY</div><h2>Troubleshooting your first builder</h2>
+<div class="faq"><details><summary>Pi does not appear in discovery</summary><p>Check that the Host Service and Avahi are running and the Pi is on a reachable network. mDNS may not cross VLANs or reach the controller container. Use the Pi IP address to pair manually.</p><div class="code-row"><code>avahi-browse -rt _tinkertunnel._tcp</code><button type="button" class="copy-code" data-copy="avahi-browse -rt _tinkertunnel._tcp">Copy</button></div></details>
+<details><summary>Host fails to pair or the fingerprint changes</summary><p>Ensure SSH password authentication is enabled for the Pi's user and the controller can reach TCP/22. Independently verify the Ed25519 fingerprint from the Pi's local SSH host key. A changed fingerprint can indicate re-imaging or an unexpected device; investigate before proceeding.</p></details>
+<details><summary>Host is paired but offline</summary><p>Confirm outbound HTTPS access to your controller, certificate trust, DNS resolution, and service logs. Pairing alone does not imply the heartbeat is healthy.</p><div class="code-row"><code>journalctl -u tinkertunnel-host -n 80 --no-pager</code><button type="button" class="copy-code" data-copy="journalctl -u tinkertunnel-host -n 80 --no-pager">Copy</button></div></details>
+<details><summary>GitHub runner registration fails</summary><p>Check the controller’s Host provisioning activity, its GitHub organization selection, and GitHub App runner permissions. Do not manually register a second Actions runner on the Pi to work around an incomplete controller action.</p></details></div>
+<p class="fineprint">Never post the contents of <code>/var/lib/tinkertunnel/host.json</code>: it contains a private host credential.</p>
+</section>
+<nav class="docs-next" aria-label="Next steps"><a href="/"><span>Back to TinkerTunnel</span><strong>Explore the product ←</strong></a><a href="#prepare"><span>Start again</span><strong>Prepare another builder ↑</strong></a></nav>
+</article></main>
+<footer class="wrap"><span>© 2026 TinkerTunnel · Alpha documentation</span><span><a href="/">Product</a> · <a href="https://github.com/TinkerTunnel">GitHub</a></span></footer></body></html>
