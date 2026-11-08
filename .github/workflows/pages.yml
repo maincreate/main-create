@@ -40,7 +40,7 @@ jobs:
           python3 scripts/build-site.py
           test -f _site/index.html
           test -f _site/docs/index.html
-          test -f _site/assets/maincreate-mark.svg
+          test -f _site/assets/maincreate-braces-layers.svg
           test "$(cat _site/CNAME)" = "maincreate.com"
 
       - name: Configure GitHub Pages
