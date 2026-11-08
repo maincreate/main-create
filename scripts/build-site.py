@@ -16,6 +16,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUTPUT = ROOT / "_site"
 FILES = (
     "index.html", "style.css", "CNAME",
+    "assets/maincreate-mark.svg",
     "docs/index.html", "docs/docs.css", "docs/docs.js",
 )
 
