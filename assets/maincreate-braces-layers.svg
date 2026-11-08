@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-7 -7 237 184" role="img" aria-labelledby="mark-title">
+  <title id="mark-title">Main{Create} curly braces surrounding three stacked building layers</title>
+  <defs>
+    <linearGradient id="braces" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#05bbc0"/><stop offset="1" stop-color="#078394"/></linearGradient>
+    <linearGradient id="top" x1="0" y1="0" x2="0.7" y2="1"><stop offset="0" stop-color="#59d7e7"/><stop offset="1" stop-color="#30bed3"/></linearGradient>
+    <linearGradient id="mid" x1="0" y1="0" x2="0.8" y2="1"><stop offset="0" stop-color="#2bc0d3"/><stop offset="1" stop-color="#159bb8"/></linearGradient>
+    <linearGradient id="bottom" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#298eae"/><stop offset="1" stop-color="#15648e"/></linearGradient>
+  </defs>
+  <path fill="url(#braces)" d="M53 7 45 9 38 13 33 17 28 24 25 33 25 62 23 67 19 71 12 74 9 74 7 76 7 92 11 95 15 95 19 97 24 104 25 107 25 128 24 132 27 144 30 149 37 156 46 161 53 163 65 163 67 161 67 149 65 146 53 145 48 142 44 136 43 133 43 101 39 93 29 84 38 77 43 68 43 64 44 63 44 35 46 31 53 25 56 24 66 24 68 22 68 8 67 7Z"/>
+  <path fill="url(#braces)" d="M156 7 154 9 154 22 156 24 167 24 171 26 175 30 178 39 178 44 177 45 177 62 178 63 178 67 184 78 192 84 191 86 185 90 180 98 179 102 179 134 177 139 170 145 159 146 156 149 156 161 158 163 170 163 183 158 194 147 198 133 197 129 197 107 200 100 205 96 214 94 215 86 214 85 214 75 203 72 197 66 196 63 196 31 195 27 190 18 183 12 170 7Z"/>
+  <path fill="url(#top)" d="M59 62 59 64 62 68 106 90 110 90 111 91 116 90 160 68 163 65 163 60 161 57 115 34 108 34 61 58Z"/>
+  <path fill="url(#mid)" d="M59 93 62 98 109 121 117 120 119 118 121 118 127 114 137 110 139 108 157 99 161 98 163 95 163 91 161 89 147 82 145 82 116 97 107 97 77 82 62 89Z"/>
+  <path fill="url(#bottom)" d="M60 119 60 124 62 126 109 149 117 148 127 142 160 126 163 123 163 119 161 117 149 111 147 111 116 127 107 127 75 111 62 117Z"/>
+</svg>
