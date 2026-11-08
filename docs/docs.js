@@ -21,7 +21,7 @@
  const prepare=document.getElementById("prepareCommand");
  const copyInstall=document.getElementById("copyInstall");
  const note=document.getElementById("commandNote");
- const installBase=(origin)=>"curl -fsSL "+origin+"/install.sh | sudo env TT_CONTROLLER_URL="+origin+" bash";
+ const installBase=(origin)=>"curl -fsSL "+origin+"/install.sh | sudo env MAIN_CONTROLLER_URL="+origin+" bash";
  const prepareCommand=()=>{
   const raw=ctrl.value.trim();
   try{
