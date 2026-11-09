@@ -17,6 +17,7 @@ OUTPUT = ROOT / "_site"
 FILES = (
     "index.html", "style.css", "CNAME",
     "assets/maincreate-braces-layers.svg",
+    "assets/maincreate-icon.png",
     "docs/index.html", "docs/docs.css", "docs/docs.js",
 )
 
